@@ -93,7 +93,7 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
         [HttpHead]
-        public ActionResult<UsersDto> UpdateUser(UsersUpdateDto user)
+        public ActionResult<UsersDto> UpdateUser(UsersDto user)
         {
 
             try

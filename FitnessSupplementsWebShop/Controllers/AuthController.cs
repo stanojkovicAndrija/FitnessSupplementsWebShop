@@ -28,7 +28,7 @@ namespace FitnessSupplementsWebShop.Controllers
         private readonly IMapper mapper;
         private readonly LinkGenerator linkGenerator;
 
-        public AuthController(LinkGenerator linkGenerator,IMapper mapper,IConfiguration config,IUsersRepository usersRepository)
+        public AuthController(LinkGenerator linkGenerator, IMapper mapper, IConfiguration config, IUsersRepository usersRepository)
         {
             _config = config;
             this.usersRepository = usersRepository;
@@ -89,7 +89,7 @@ namespace FitnessSupplementsWebShop.Controllers
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Audience"],
               claims,
-              expires: DateTime.Now.AddMinutes(600),
+              expires: DateTime.Now.AddDays(20),
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -98,7 +98,13 @@ namespace FitnessSupplementsWebShop.Controllers
         private UsersDto Authenticate(LoginDto userLogin)
         {
             var currentUser = mapper.Map<UsersDto>(usersRepository.GetUserByEmail(userLogin));
-            if (currentUser != null)
+            if (currentUser.Role == "admin")
+            {
+                if (currentUser.Password == userLogin.Password)
+                    return currentUser;
+                else return null;
+            }
+            if (currentUser != null && BCrypt.Net.BCrypt.Verify(userLogin.Password, currentUser.Password)) 
             {
                 return currentUser;
             }

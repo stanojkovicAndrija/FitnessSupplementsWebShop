@@ -10,12 +10,10 @@ namespace FitnessSupplementsWebShop.Data
     public class OrderitemRepository : IOrderitemRepository
     {
         private readonly FitnessSupplementsWebShopContext context;
-        private readonly IMapper mapper;
 
-        public OrderitemRepository(FitnessSupplementsWebShopContext context, IMapper mapper)
+        public OrderitemRepository(FitnessSupplementsWebShopContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public bool SaveChanges()

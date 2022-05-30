@@ -1,4 +1,4 @@
-﻿
+
 
 DROP TABLE IF EXISTS orderitem;
 DROP TABLE IF EXISTS review;
@@ -32,6 +32,7 @@ Name VARCHAR(100) NOT NULL
 CREATE TABLE product (
 ProductID INT IDENTITY(1,1) PRIMARY KEY,
 Name VARCHAR(100) NOT NULL,
+PictureUrl VARCHAR(255) NOT NULL,
 Description varchar(255) not null,
 Price numeric(10) not null,
 Quantity int,
@@ -62,7 +63,7 @@ PaymentID INT,
 OrderAddress VARCHAR(100) NOT NULL,
 City VARCHAR(100) NOT NULL,
 NumberOfProducts INT,
-Total NUMERIC(10),
+Total NUMERIC(10) DEFAULT 0,
 FOREIGN KEY (UserID) REFERENCES users(UserID),
 FOREIGN KEY (PaymentID) REFERENCES payment(PaymentID)
 )
@@ -70,6 +71,7 @@ CREATE TABLE orderitem(
 OrderItemID INT IDENTITY(1,1) PRIMARY KEY,
 ProductID INT,
 OrderID INT,
+Quantity INT,
 FOREIGN KEY (ProductID) REFERENCES product(ProductID),
 FOREIGN KEY (OrderID) REFERENCES orders(OrderID)
 
@@ -82,12 +84,21 @@ ON orderitem
 AFTER INSERT,DELETE 
 AS BEGIN
 	DECLARE @order_id int
-	SET @order_id = (SELECT OrderID FROM inserted)
-
 	DECLARE @quantity int
-	SET @quantity= (SELECT COUNT(*)
+	if((SELECT OrderID FROM inserted) IS NOT NULL)
+	begin 
+	SET @order_id = (SELECT OrderID FROM inserted)
+	SET @quantity= (SELECT sum(Quantity)
 	FROM orderitem
 	WHERE @order_id= OrderID)
+	end
+	IF((SELECT OrderID FROM deleted) IS NOT NULL)
+	BEGIN
+	SET @order_id = (SELECT OrderID FROM deleted)
+	SET @quantity= (SELECT sum(Quantity)
+	FROM orderitem
+	WHERE @order_id= OrderID)
+	END
 
 	update orders 
 	SET NumberOfProducts=@quantity
@@ -101,14 +112,36 @@ CREATE TRIGGER TotalPriceUpdate
 ON orderitem
 AFTER INSERT 
 AS BEGIN
+	DECLARE @orderQuantity as int
 	DECLARE @sum AS NUMERIC(10) = 0
 	DECLARE @order_id int
+	DECLARE @productID int
+	SET  @productID = (SELECT ProductID FROM inserted)
+	SET @orderQuantity= (SELECT Quantity FROM inserted)
 	SET @order_id = (SELECT OrderID FROM inserted)
-	SET @sum = ( SELECT SUM(p.price) from orderitem o join 
-			product p on p.ProductID=o.ProductID
-			where o.OrderID=@order_id)
+	SET @sum = ( SELECT Price from product where ProductID=@productID)
 	UPDATE orders 
-	SET total=@sum
+	SET Total+=(@sum*@orderQuantity)
+	WHERE @order_id=OrderID
+END;
+GO
+
+DROP TRIGGER IF EXISTS TotalPriceUpdateAfterDelete
+GO
+CREATE TRIGGER TotalPriceUpdateAfterDelete
+ON orderitem
+AFTER DELETE 
+AS BEGIN
+	DECLARE @orderQuantity as int
+	DECLARE @sum AS NUMERIC(10) = 0
+	DECLARE @order_id int
+	DECLARE @productID int
+	SET  @productID = (SELECT ProductID FROM deleted)
+	SET @orderQuantity= (SELECT Quantity FROM deleted)
+	SET @order_id = (SELECT OrderID FROM deleted)
+	SET @sum = ( SELECT Price from product where ProductID=@productID)
+	UPDATE orders 
+	SET Total-=(@sum*@orderQuantity)
 	WHERE @order_id=OrderID
 END;
 GO
@@ -117,10 +150,12 @@ DROP TRIGGER IF EXISTS ProductQuantityUpdate
 GO
 CREATE TRIGGER ProductQuantityUpdate
 ON orderitem
-AFTER INSERT 
+AFTER INSERT,DELETE
 AS BEGIN
 	
 	DECLARE @order_id int
+	DECLARE @orderQuantity as int
+	SET @orderQuantity= (SELECT Quantity FROM inserted)
 	SET @order_id = (SELECT OrderID FROM inserted)
 	DECLARE @product_id int
 	SET @product_id = (SELECT ProductID from inserted)
@@ -129,14 +164,14 @@ AS BEGIN
 	if(@quantity > 0)
 	BEGIN
 		UPDATE product
-		SET quantity -= 1 
+		SET quantity -= @orderQuantity 
 		WHERE @product_id = ProductID
 	END
 END;
 GO
 
 insert into users
-values ('Andrija','Stanojkovic','andrija@gmail.com','andrija11111','064325129','Novi Sad  Strazilovska 20','admin');
+values ('Andrija','Stanojkovic','admin','admin','064325129','Novi Sad  Strazilovska 20','admin');
 
 insert into users
 values ('Petar','Petrovic','Petar22@gmail.com','petar111111','066325122','Novi Sad  Strazilovska 60','customer');
@@ -157,33 +192,20 @@ values ('Proteini');
 
 
 insert into product
-values ('THE AMINO WHEY HYDRO PROTEIN 3.500 G','Amino Whey Hydro protein The Nutrition. je preko 86% Protein i sadrži gotovo ništa Masti ili Ugljenih Hidrata.','7500',20, 4 , 2 );
+values ('THE AMINO WHEY HYDRO PROTEIN 3.500 G','Images/the-amino-whey-hydro3500g.jpg','Amino Whey Hydro protein The Nutrition. je preko 86% Protein i sadrži gotovo ništa Masti ili Ugljenih Hidrata.','7500',20, 4 , 2 );
 insert into product
-values ('KRE - ALKALYN YAMAMOTO 240 KAPSULA','Yamamoto® Nutrition Kre-ALKALYN® je dodatak ishrani napravljen od mikronizovanog kreatina monohidrata','5000',30, 2 , 1 );
+values ('KRE - ALKALYN YAMAMOTO 240 KAPSULA','Images/yamamoto-kre-alkalyn-240kaps-2.jpg','Yamamoto® Nutrition Kre-ALKALYN® je dodatak ishrani napravljen od mikronizovanog kreatina monohidrata','5000',30, 2 , 1 );
 
 insert into payment
 values ('Cash'),('Credit card')
 
-insert into orders
-values (1,2,'Zeleznicka 21','Novi Sad', 2 ,'7500');
-insert into orders
-values (2,2,'Zeleznicka 22','Novi Sad', 2 ,'15000');
-
-insert into orderitem
-values (1,1);
-insert into orderitem
-values (1,2);
-insert into orderitem
-values (2,2);
-
-insert into orderitem
-values (1,1);
-insert into orderitem
-values (1,1);
+insert into orders(UserID,PaymentID,OrderAddress,City)
+values (1,2,'Zeleznicka 21','Novi Sad');
+insert into orders(UserID,PaymentID,OrderAddress,City)
+values (2,2,'Zeleznicka 22','Novi Sad');
 
 insert into review
 values ('10/10, svaka preporuka! Odlican protein! Vrlo lako se muti, ukus izvanredan. Takodje i after-taste. Cist bez ikakvih stetnih dodataka sto je zaista potrebno trzistu, izuzetno brza dostava. Necete se pokajati!',5,1,1)
-
 
 SELECT * from orders
 SELECT * from orderitem
@@ -193,4 +215,8 @@ select * from manufacturer
 select * from payment
 select * from users
 select * from review
+
+delete orderitem where OrderItemID=2
+insert into orderitem
+values (1,1,2)
 

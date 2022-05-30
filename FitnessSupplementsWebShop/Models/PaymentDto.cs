@@ -7,6 +7,7 @@ namespace FitnessSupplementsWebShop.Models
 {
     public class PaymentDto
     {
+        public int PaymentID { get; set; }
         public string PaymentMethod { get; set; }
 
     }

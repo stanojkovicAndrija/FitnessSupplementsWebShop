@@ -106,7 +106,7 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
         [HttpHead]
-        public ActionResult<OrdersDto> UpdateOrders(OrdersUpdateDto order)
+        public ActionResult<OrdersDto> UpdateOrders(OrdersDto order)
         {
 
             try

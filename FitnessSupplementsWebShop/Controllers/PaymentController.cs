@@ -88,7 +88,7 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
         [HttpHead]
-        public ActionResult<PaymentDto> UpdatePayment(PaymentUpdateDto payment)
+        public ActionResult<PaymentDto> UpdatePayment(PaymentDto payment)
         {
 
             try

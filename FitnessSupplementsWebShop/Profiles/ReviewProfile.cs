@@ -14,8 +14,8 @@ namespace FitnessSupplementsWebShop.Profiles
         {
             CreateMap<ReviewEntity, ReviewDto>();
             CreateMap<ReviewDto, ReviewEntity>();
-            CreateMap<ReviewEntity, ReviewUpdateDto>();
-            CreateMap<ReviewUpdateDto, ReviewEntity>();
+            CreateMap<ReviewEntity, ReviewDto>();
+            CreateMap<ReviewDto, ReviewEntity>();
 
         }
     }

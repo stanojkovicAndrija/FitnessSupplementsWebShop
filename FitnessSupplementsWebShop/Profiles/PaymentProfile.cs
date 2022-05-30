@@ -14,8 +14,8 @@ namespace FitnessSupplementsWebShop.Profiles
         {
             CreateMap<PaymentEntity, PaymentDto>();
             CreateMap<PaymentDto, PaymentEntity>();
-            CreateMap<PaymentEntity, PaymentUpdateDto>();
-            CreateMap<PaymentUpdateDto, PaymentEntity>();
+            CreateMap<PaymentEntity, PaymentDto>();
+            CreateMap<PaymentDto, PaymentEntity>();
 
         }
     }

@@ -117,7 +117,7 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
         [HttpHead]
-        public ActionResult<ReviewDto> UpdateReview(ReviewUpdateDto review)
+        public ActionResult<ReviewDto> UpdateReview(ReviewDto review)
         {
 
             try

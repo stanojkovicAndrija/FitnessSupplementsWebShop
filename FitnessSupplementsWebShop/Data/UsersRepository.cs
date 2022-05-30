@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FitnessSupplementsWebShop.Auth;
 using FitnessSupplementsWebShop.Entities;
+using FitnessSupplementsWebShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,15 @@ namespace FitnessSupplementsWebShop.Data
 
         public UsersEntity CreateUser(UsersEntity user)
         {
+            string hashedPassword = HashPassword(user.Password);
+            user.Password = hashedPassword;
             context.Users.Add(user);
             return user;
         }
-
+        public string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);           
+        }
         public void DeleteUser(int userID)
         {
             context.Users.Remove(context.Users.FirstOrDefault(u => u.UserID == userID));
@@ -42,13 +48,13 @@ namespace FitnessSupplementsWebShop.Data
 
         public UsersEntity GetUserByEmail(LoginDto login)
         {
-            return context.Users.FirstOrDefault(u => u.Email == login.Email && u.Password == login.Password);
+            return context.Users.FirstOrDefault(u => u.Email == login.Email);
         }
         public List<UsersEntity> GetUsers()
         {
-            return (from u in context.Users select u).ToList();
+            return (from u in context.Users select u)
+                .ToList();
         }
-
         public void UpdateUser(UsersEntity user)
         {
             throw new NotImplementedException();

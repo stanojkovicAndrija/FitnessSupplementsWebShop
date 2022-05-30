@@ -91,7 +91,7 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
         [HttpHead]
-        public ActionResult<CategoryDto> UpdateCategory(CategoryUpdateDto category)
+        public ActionResult<CategoryDto> UpdateCategory(CategoryDto category)
         {
 
             try

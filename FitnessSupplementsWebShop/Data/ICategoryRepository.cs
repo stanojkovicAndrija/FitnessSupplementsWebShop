@@ -12,6 +12,7 @@ namespace FitnessSupplementsWebShop.Data
 
         CategoryEntity GetCategoryByID(int categoryID);
 
+        CategoryEntity GetCategoryByName(string name);
         CategoryEntity CreateCategory(CategoryEntity category);
 
         void UpdateCategory(CategoryEntity category);

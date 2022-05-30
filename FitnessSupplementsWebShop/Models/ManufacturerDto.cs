@@ -7,6 +7,7 @@ namespace FitnessSupplementsWebShop.Models
 {
     public class ManufacturerDto
     {
+        public int ManufacturerID { get; set; }
         public string Name { get; set; }
     }
 }

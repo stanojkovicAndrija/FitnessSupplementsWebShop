@@ -21,5 +21,6 @@ namespace FitnessSupplementsWebShop.Entities
         public DbSet<PaymentEntity> Payment { get; set; }
         public DbSet<ProductEntity> Product { get; set; }
         public DbSet<ReviewEntity> Review { get; set; }
+        
     }
 }

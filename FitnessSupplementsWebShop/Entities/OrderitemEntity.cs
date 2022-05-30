@@ -15,7 +15,8 @@ namespace FitnessSupplementsWebShop.Entities
             public int ProductID { get; set; }
             public ProductEntity Product { get; set; }
             public int OrderID { get; set; }
-            public  OrdersEntity Order { get; set; }
+            public OrdersEntity Order { get; set; }
+            public int Quantity { get; set; }
 
     }
 }

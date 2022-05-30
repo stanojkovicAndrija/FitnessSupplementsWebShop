@@ -8,6 +8,7 @@ namespace FitnessSupplementsWebShop.Models
 {
     public class ReviewDto
     {
+        public int ReviewID { get; set; }
         public string Comment { get; set; }
         public int Rating { get; set; }
         public int UserID { get; set; }

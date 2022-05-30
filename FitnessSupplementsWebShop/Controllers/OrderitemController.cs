@@ -85,7 +85,6 @@ namespace FitnessSupplementsWebShop.Controllers
                 OrderitemEntity rew = mapper.Map<OrderitemEntity>(orderItem);               
                 OrderitemEntity r = orderitemRepository.CreateOrderItem(rew);
                 orderitemRepository.SaveChanges();
-                return Ok(r);
                 string location = linkGenerator.GetPathByAction("GetOrderItem", "Orderitem", new { orderItemID = r.OrderItemID });
                 OrderitemDto orderItemDto = mapper.Map<OrderitemDto>(r);
                 orderItemDto.Order = mapper.Map<OrdersDto>(ordersRepository.GetOrderByID(orderItem.OrderID));
@@ -106,7 +105,7 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
         [HttpHead]
-        public ActionResult<OrderitemDto> UpdateOrderitem(OrderitemUpdateDto orderItem)
+        public ActionResult<OrderitemDto> UpdateOrderitem(OrderitemDto orderItem)
         {
 
             try
@@ -121,6 +120,7 @@ namespace FitnessSupplementsWebShop.Controllers
 
                 oldOrderitem.OrderID = orderItemEntity.OrderID;
                 oldOrderitem.ProductID = orderItemEntity.ProductID;
+                oldOrderitem.Quantity = orderItemEntity.Quantity;
                 orderitemRepository.SaveChanges();
                 OrderitemDto orderItemDto = mapper.Map<OrderitemDto>(oldOrderitem);
                 orderItemDto.Order = mapper.Map<OrdersDto>(ordersRepository.GetOrderByID(orderItem.OrderID));

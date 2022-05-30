@@ -14,8 +14,8 @@ namespace FitnessSupplementsWebShop.Profiles
         {
             CreateMap<OrderitemEntity, OrderitemDto>();
             CreateMap<OrderitemDto, OrderitemEntity>();
-            CreateMap<OrderitemEntity, OrderitemUpdateDto>();
-            CreateMap<OrderitemUpdateDto, OrderitemEntity>();
+            CreateMap<OrderitemEntity, OrderitemDto>();
+            CreateMap<OrderitemDto, OrderitemEntity>();
 
         }
     }

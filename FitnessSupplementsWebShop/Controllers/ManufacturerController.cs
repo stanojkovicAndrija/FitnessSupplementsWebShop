@@ -86,7 +86,7 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
         [HttpHead]
-        public ActionResult<ManufacturerDto> UpdateManufacturer(ManufacturerUpdateDto manufacturer)
+        public ActionResult<ManufacturerDto> UpdateManufacturer(ManufacturerDto manufacturer)
         {
 
             try

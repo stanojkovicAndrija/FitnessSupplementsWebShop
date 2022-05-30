@@ -17,7 +17,10 @@ namespace FitnessSupplementsWebShop.Data
             this.context = context;
             this.mapper = mapper;
         }
-
+        public CategoryEntity GetCategoryByName(string name)
+        {
+            return context.Category.FirstOrDefault(r => r.Name == name);
+        }
         public bool SaveChanges()
         {
             return context.SaveChanges() > 0;

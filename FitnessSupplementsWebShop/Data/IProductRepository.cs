@@ -9,7 +9,9 @@ namespace FitnessSupplementsWebShop.Data
     public interface IProductRepository
     {
         List<ProductEntity> GetProduct();
+        int GetProductCount();
 
+        List<ProductEntity> GetProductByPage(int page, int pageResults, string manufacturer=null, string category=null); 
         ProductEntity GetProductByID(int productID);
         //List<ProductEntity> GetProductsByCategory(string category);
         //List<ProductEntity> GetProductsByManufacturer(string manufacturer);

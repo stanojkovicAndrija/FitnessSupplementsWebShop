@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using FitnessSupplementsWebShop.Entities;
-
+using System.Threading.Tasks;
 
 namespace FitnessSupplementsWebShop.Models
 {
     public class OrdersDto
     {
+        public int OrderID { get; set; }
         public int UserID { get; set; }
         public UsersDto User { get; set; }
         public int PaymentID { get; set; }

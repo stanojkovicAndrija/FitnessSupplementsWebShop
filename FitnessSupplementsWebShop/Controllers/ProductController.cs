@@ -23,7 +23,7 @@ namespace FitnessSupplementsWebShop.Controllers
         private readonly LinkGenerator linkGenerator;
         private readonly IMapper mapper;
 
-        public ProductController(ICategoryRepository categoryRepository,IManufacturerRepository manufacturerRepository,IProductRepository productRepository, LinkGenerator linkGenerator, IMapper mapper)
+        public ProductController(ICategoryRepository categoryRepository, IManufacturerRepository manufacturerRepository, IProductRepository productRepository, LinkGenerator linkGenerator, IMapper mapper)
         {
             this.productRepository = productRepository;
             this.linkGenerator = linkGenerator;
@@ -37,13 +37,17 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<ProductDto>> GetProduct()
+        public ActionResult<List<ProductDto>> GetProduct([FromQuery] string manufacturer,[FromQuery] string category,[FromQuery] int page)
         {
-            List<ProductEntity> products = productRepository.GetProduct();
+            if (page == 0)
+                page = 1;
+            var productsCount = productRepository.GetProductCount();
+            var pageResult = 3f;
+            var pageCount = Math.Ceiling(productsCount / pageResult);
+            var products = productRepository.GetProductByPage(page, (int)(pageResult),manufacturer,category);
             if (products == null || products.Count == 0)
                 return NoContent();
             List<ProductDto> productsDto = new List<ProductDto>();
-
             foreach (ProductEntity r in products)
             {
                 ProductDto productDto = mapper.Map<ProductDto>(r);
@@ -51,7 +55,14 @@ namespace FitnessSupplementsWebShop.Controllers
                 productDto.Category = mapper.Map<CategoryDto>(categoryRepository.GetCategoryByID(r.CategoryID));
                 productsDto.Add(productDto);
             }
-            return Ok(productsDto);
+            var response = new ProductResponse
+            {
+                Products = productsDto,
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+            return Ok(response);
+            
         }
 
         [AllowAnonymous]
@@ -142,7 +153,7 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
         [HttpHead]
-        public ActionResult<ProductDto> UpdateProduct(ProductUpdateDto product)
+        public ActionResult<ProductDto> UpdateProduct(ProductDto product)
         {
 
             try
@@ -156,6 +167,7 @@ namespace FitnessSupplementsWebShop.Controllers
                 ProductEntity productEntity = mapper.Map<ProductEntity>(product);
 
                 oldProduct.Name = productEntity.Name;
+                oldProduct.Description = productEntity.Description;
                 oldProduct.Price = productEntity.Price;
                 oldProduct.Quantity = productEntity.Quantity;
                 oldProduct.CategoryID = productEntity.CategoryID;

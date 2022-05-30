@@ -1,5 +1,6 @@
 ﻿using FitnessSupplementsWebShop.Auth;
 using FitnessSupplementsWebShop.Entities;
+using FitnessSupplementsWebShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace FitnessSupplementsWebShop.Data
 
         bool SaveChanges();
 
+        string HashPassword(string password);
         UsersEntity GetUserByEmail(LoginDto login);
 
     }
