@@ -37,17 +37,24 @@ namespace FitnessSupplementsWebShop.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<ProductDto>> GetProduct([FromQuery] string manufacturer,[FromQuery] string category,[FromQuery] int page)
+        public ActionResult<List<ProductDto>> GetProduct([FromQuery] Params p)
         {
-            if (page == 0)
-                page = 1;
+            if(p.PageIndex == 0)
+                p.PageIndex = 1;
             var productsCount = productRepository.GetProductCount();
             var pageResult = 3f;
-            var pageCount = Math.Ceiling(productsCount / pageResult);
-            var products = productRepository.GetProductByPage(page, (int)(pageResult),manufacturer,category);
-            if (products == null || products.Count == 0)
-                return NoContent();
-            List<ProductDto> productsDto = new List<ProductDto>();
+            var products = productRepository.GetProductByPage(p.PageIndex, (int)(pageResult),p.ManufacturerID,p.CategoryID,p.Sort,p.Search);
+            var numberOfproducts = productRepository.GetNumberOfProducts();
+            var response = new ProductResponse
+            {
+                Products = null,
+                PageIndex = p.PageIndex,
+                PageSize = (int)pageResult,
+                Count = numberOfproducts
+            };
+            if (products == null || numberOfproducts == 0)
+                return Ok(response);
+            List<ProductDto> productsDto = new();
             foreach (ProductEntity r in products)
             {
                 ProductDto productDto = mapper.Map<ProductDto>(r);
@@ -55,11 +62,12 @@ namespace FitnessSupplementsWebShop.Controllers
                 productDto.Category = mapper.Map<CategoryDto>(categoryRepository.GetCategoryByID(r.CategoryID));
                 productsDto.Add(productDto);
             }
-            var response = new ProductResponse
+             response = new ProductResponse
             {
                 Products = productsDto,
-                CurrentPage = page,
-                Pages = (int)pageCount
+                PageIndex = p.PageIndex,
+                PageSize = (int)pageResult,
+                Count = numberOfproducts
             };
             return Ok(response);
             

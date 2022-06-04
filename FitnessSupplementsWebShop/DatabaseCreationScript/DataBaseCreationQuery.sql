@@ -192,9 +192,44 @@ values ('Proteini');
 
 
 insert into product
-values ('THE AMINO WHEY HYDRO PROTEIN 3.500 G','Images/the-amino-whey-hydro3500g.jpg','Amino Whey Hydro protein The Nutrition. je preko 86% Protein i sadrži gotovo ništa Masti ili Ugljenih Hidrata.','7500',20, 4 , 2 );
+values ('THE AMINO WHEY HYDRO PROTEIN 3.500 G','assets/images/the-amino-whey-hydro3500g.jpg','Amino Whey Hydro protein The Nutrition. je preko 86% Protein i sadrži gotovo ništa Masti ili Ugljenih Hidrata.','7500',20, 4 , 2 );
 insert into product
-values ('KRE - ALKALYN YAMAMOTO 240 KAPSULA','Images/yamamoto-kre-alkalyn-240kaps-2.jpg','Yamamoto® Nutrition Kre-ALKALYN® je dodatak ishrani napravljen od mikronizovanog kreatina monohidrata','5000',30, 2 , 1 );
+values ('KRE - ALKALYN YAMAMOTO 240 KAPSULA','assets/images/yamamoto-kre-alkalyn-240kaps-2.jpg','Yamamoto® Nutrition Kre-ALKALYN® je dodatak ishrani napravljen od mikronizovanog kreatina monohidrata','5000',30, 2 , 1 );
+insert into product
+values ('ISO-FUJI® YAMAMOTO NUTRITION PROTEIN 2000 GRAMA',
+'assets/images/iso-fuji-yamamoto-nutrition2000-grama.jpg',
+'Iso-FUJI® - Dodatak ishrani  koji je nastao izolacijom, odnosno unakrsnom ultrafiltracijom i mikrofiltracijom Volactive® Ultra Whey XP.',
+'9390',
+20, 
+4 ,
+ 1 );
+ insert into product
+values ('YAMAMOTO® NUTRITION SHAKER 700 ML',
+'assets/images/yamamoto-nutrition-shaker-700-ml.jpg',
+'Šejker (700ml) sa logotipom "Yamamoto Nutrition".',
+'350',
+100, 
+1 ,
+ 1 );
+
+insert into product
+values ('VITAMIN C COMPLEX +D3+CINK THE NUTRITION 120 KAPSULA',
+'assets/images/vitamin-c-complex-d3cink-100-tableta.jpg',
+'Vitamin C complex sadrži Cink, vitamin D3 i prirodni ekstrakt šipka. Ova jedinstvena formula postepeno oslobađa i dodaje hranljive materije vašem organizmu. ".',
+'1320',
+200, 
+3 ,
+ 2 );
+
+
+insert into product
+values ('THE BASIC 100% WHEY PROTEIN 5400 GRAMA',
+'assets/images/the-basic-100-whey-protein-5400-grama.jpg',
+'100% Whey Protein je napredna formula proteina surutke, napravljena za sve sportaše, koji žele više mišića, više snage i brži oporavak. ',
+'8900',
+30, 
+4 ,
+ 2 );
 
 insert into payment
 values ('Cash'),('Credit card')

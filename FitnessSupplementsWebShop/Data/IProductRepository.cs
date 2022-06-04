@@ -10,8 +10,7 @@ namespace FitnessSupplementsWebShop.Data
     {
         List<ProductEntity> GetProduct();
         int GetProductCount();
-
-        List<ProductEntity> GetProductByPage(int page, int pageResults, string manufacturer=null, string category=null); 
+        List<ProductEntity> GetProductByPage(int page, int pageResults, int? manufacturerID, int? categoryID,string sort,string search); 
         ProductEntity GetProductByID(int productID);
         //List<ProductEntity> GetProductsByCategory(string category);
         //List<ProductEntity> GetProductsByManufacturer(string manufacturer);
@@ -19,6 +18,7 @@ namespace FitnessSupplementsWebShop.Data
         ProductEntity CreateProduct(ProductEntity product);
 
         void UpdateProduct(ProductEntity product);
+        int GetNumberOfProducts();
 
         void DeleteProduct(int productID);
 
