@@ -45,7 +45,13 @@ namespace FitnessSupplementsWebShop.Controllers
             if (user != null)
             {
                 var token = Generate(user);
-                return Ok(token);
+                var response = new LoginResponse
+                {
+                    Email = user.Email,
+                    DisplayName = user.FirstName + " " + user.LastName,
+                    Token = token
+                };
+                return Ok(response);
             }
 
             return NotFound("User not found");
@@ -98,6 +104,8 @@ namespace FitnessSupplementsWebShop.Controllers
         private UsersDto Authenticate(LoginDto userLogin)
         {
             var currentUser = mapper.Map<UsersDto>(usersRepository.GetUserByEmail(userLogin));
+            if (currentUser == null)
+                return null; 
             if (currentUser.Role == "admin")
             {
                 if (currentUser.Password == userLogin.Password)

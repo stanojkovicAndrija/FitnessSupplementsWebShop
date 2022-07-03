@@ -10,10 +10,12 @@ namespace FitnessSupplementsWebShop.Data
     public class OrderitemRepository : IOrderitemRepository
     {
         private readonly FitnessSupplementsWebShopContext context;
+        private readonly IProductRepository productRepository;
 
-        public OrderitemRepository(FitnessSupplementsWebShopContext context)
+        public OrderitemRepository(FitnessSupplementsWebShopContext context, IProductRepository productRepository)
         {
             this.context = context;
+            this.productRepository = productRepository;
         }
 
         public bool SaveChanges()
@@ -42,6 +44,18 @@ namespace FitnessSupplementsWebShop.Data
             return (from r in context.Orderitem select r).ToList();
         }
 
+        public List<ProductEntity> GetProductsByOrderID(int orderID)
+        {
+            List<ProductEntity> lista = new();
+            foreach(var v in context.Orderitem)
+            {
+                if(v.OrderID==orderID)
+                {
+                    lista.Add(productRepository.GetProductByID(v.ProductID));
+                }                
+            }
+            return lista;
+        }
         public void UpdateOrderItem(OrderitemEntity orderItem)
         {
             throw new NotImplementedException();

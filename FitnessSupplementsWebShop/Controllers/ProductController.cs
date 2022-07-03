@@ -42,7 +42,7 @@ namespace FitnessSupplementsWebShop.Controllers
             if(p.PageIndex == 0)
                 p.PageIndex = 1;
             var productsCount = productRepository.GetProductCount();
-            var pageResult = 3f;
+            var pageResult = 6f;
             var products = productRepository.GetProductByPage(p.PageIndex, (int)(pageResult),p.ManufacturerID,p.CategoryID,p.Sort,p.Search);
             var numberOfproducts = productRepository.GetNumberOfProducts();
             var response = new ProductResponse

@@ -21,10 +21,11 @@ namespace FitnessSupplementsWebShop.Controllers
         private readonly IPaymentRepository paymentRepository;
         private readonly IUsersRepository usersRepository;
         private readonly ICategoryRepository categoryRepository;
+        private readonly IOrderitemRepository orderitemRepository;
         private readonly LinkGenerator linkGenerator;
         private readonly IMapper mapper;
 
-        public OrdersController(IOrdersRepository ordersRepository,IUsersRepository usersRepository,IPaymentRepository paymentRepository,ICategoryRepository categoryRepository, LinkGenerator linkGenerator, IMapper mapper)
+        public OrdersController(IOrdersRepository ordersRepository,IUsersRepository usersRepository,IPaymentRepository paymentRepository,ICategoryRepository categoryRepository, LinkGenerator linkGenerator, IMapper mapper, IOrderitemRepository orderitemRepository)
         {
             this.ordersRepository = ordersRepository;
             this.usersRepository = usersRepository;
@@ -32,8 +33,8 @@ namespace FitnessSupplementsWebShop.Controllers
             this.mapper = mapper;
             this.categoryRepository = categoryRepository;
             this.paymentRepository = paymentRepository;
+            this.orderitemRepository = orderitemRepository;
         }
-        [Authorize(Roles = "admin,customer")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -69,7 +70,9 @@ namespace FitnessSupplementsWebShop.Controllers
             OrdersDto orderDto = mapper.Map<OrdersDto>(order);
             orderDto.Payment = mapper.Map<PaymentDto>(paymentRepository.GetPaymentByID(order.PaymentID));
             orderDto.User = mapper.Map<UsersDto>(usersRepository.GetUserByID(order.UserID));
-            return Ok(orderDto);
+            var response = mapper.Map<OrdersResponse>(orderDto);
+            response.Products = mapper.Map<List<ProductDto>>(orderitemRepository.GetProductsByOrderID(response.OrderID));
+            return Ok(response);
         }
         [Authorize(Roles = "admin,customer")]
         [HttpPost]

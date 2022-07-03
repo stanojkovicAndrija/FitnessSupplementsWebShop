@@ -15,6 +15,8 @@ namespace FitnessSupplementsWebShop.Data
 
         void UpdateOrderItem(OrderitemEntity orderItem);
 
+        List<ProductEntity> GetProductsByOrderID(int orderID);
+
         void DeleteOrderItem(int orderItem);
 
         bool SaveChanges();

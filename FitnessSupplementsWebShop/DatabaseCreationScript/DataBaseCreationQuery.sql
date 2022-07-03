@@ -204,6 +204,14 @@ values ('ISO-FUJI® YAMAMOTO NUTRITION PROTEIN 2000 GRAMA',
 4 ,
  1 );
  insert into product
+values ('MULTI VITAMIN YAMAMOTO® NUTRITION 60 TABLETA',
+'assets/images/multi-vitamin-yamamoto-nutrition-60-tableta.jpg',
+'Yamamoto® Nutrition predstavlja Multi Vitamin. Prehrambeni dodatak koji pruža potpun spektar vitamina i minerala. Proizvod je pogodan u slucaju smanjenog unosa iz ishrane ili povecanih zahteva za ove hranljive materije.".',
+'1400',
+100, 
+3 ,
+ 1 );
+ insert into product
 values ('YAMAMOTO® NUTRITION SHAKER 700 ML',
 'assets/images/yamamoto-nutrition-shaker-700-ml.jpg',
 'Šejker (700ml) sa logotipom "Yamamoto Nutrition".',

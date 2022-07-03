@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 using FitnessSupplementsWebShop.Data;
 using FitnessSupplementsWebShop.Entities;
 using FitnessSupplementsWebShop.Auth;
-
+using StackExchange.Redis;
 
 namespace FitnessSupplementsWebShop
 {
@@ -60,10 +60,16 @@ namespace FitnessSupplementsWebShop
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
                 });
             });
+            services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var configuration = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
             services.AddMvc();
             services.AddControllers(setup =>
                  setup.ReturnHttpNotAcceptable = true
              );
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
