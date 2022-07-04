@@ -1,0 +1,32 @@
+<div class="bg-light px-4 py-3 text-uppercase font-weight-bold">
+    Ukupna cena
+</div>
+<div class="p-4"> 
+    <p class="font-italic mb-4">Preko 10000 dostava je besplatna</p>    
+    <ul class="list-unstyled mb-4" *ngIf="(cartTotal$ | async) as totals">
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong class="text-muted">
+                Cena
+            </strong>
+            <strong>
+                {{totals.subtotal  | currency:'RSD-':true}} 
+            </strong>
+        </li>
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong class="text-muted">
+                Dostava
+            </strong>
+            <strong>
+                {{totals.delivery | currency:'RSD-':true}}
+            </strong>
+        </li>
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong class="text-muted">
+                Ukupno
+            </strong>
+            <strong>
+                {{totals.total | currency:'RSD-':true}}
+            </strong>
+        </li>
+    </ul>
+</div>

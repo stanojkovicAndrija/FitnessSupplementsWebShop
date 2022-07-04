@@ -1,0 +1,22 @@
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-3">
+        <form [formGroup]="loginForm"(ngSubmit)="onSubmit()">
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3 font-weight-normal">Prijava</h1>
+            </div>
+
+            <div class="form-label-group">
+                <label for="inputEmail">Email address</label>
+                <input formControlName="email" type="email" id="inputEmail" class="form-control" placeholder="Email"  autofocus="">
+            </div>
+            
+            <div class="form-label-group mt-2" >
+                <label for="inputPassword">Password</label>
+                <input formControlName="password" type="password" id="inputPassword" class="form-control" placeholder="Password">
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Prijava</button>
+        </form>
+    </div>
+   
+</div>

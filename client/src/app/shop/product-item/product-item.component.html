@@ -1,0 +1,16 @@
+<div class="card h-100 shadow-sm">
+    <img src="{{product.pictureUrl}}" routerLink="products/{{product.productID}}" alt="{{product.name}}" class="img-fluid bg-info" type="button">
+    <div class="card-body d-flex flex-column">
+        <a routerLink="products/{{product.productID}}">
+            <h6 class="text-uppercase">{{product.name}}</h6>
+        </a>
+        <span class="mb-2">{{product.price | currency:'RSD-':true}}</span>
+      <p class="card-text"></p>
+        <!--mozda dodam product.description-->
+      <div class="btn-group mt-auto mb-2">
+          <button (click)="addItemToCart()" type="button" class="btn btn-sm btn-outline-secondary fa fa-shopping-cart mr-2"></button>
+          <button routerLink="products/{{product.productID}}" type="button" class="btn btn-sm btn-outline-secondary">Pregled</button>
+        </div>
+        
+    </div>
+</div>
